@@ -1,0 +1,18 @@
+### GET request to example server
+GRPC localhost:9001/AuthService/CreateNewUser
+Content-Type: application/json
+
+{
+  "email": "asodnanjsd",
+  "password": "123",
+  "fullName": "123"
+}
+
+### get user form the database
+
+GRPC localhost:9001/AuthService/LoginUser
+Content-Type: application/json
+
+{
+  "email": "asodnanjsd"
+}

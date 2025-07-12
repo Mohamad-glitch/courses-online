@@ -1,0 +1,3 @@
+###.properties###
+# Ignore all .properties files
+*.properties
