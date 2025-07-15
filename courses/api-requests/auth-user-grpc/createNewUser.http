@@ -16,3 +16,12 @@ Content-Type: application/json
 {
   "email": "asodnanjsd"
 }
+
+### check if user exisits with this email
+
+GRPC localhost:9001/AuthService/UserExists
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com"
+}

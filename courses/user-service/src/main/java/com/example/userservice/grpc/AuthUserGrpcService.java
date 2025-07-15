@@ -5,7 +5,6 @@ import com.example.userservice.dto.CreateNewUserRequest;
 import com.example.userservice.model.Users;
 import com.example.userservice.services.UsersService;
 import io.grpc.stub.StreamObserver;
-import jakarta.validation.Valid;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +78,49 @@ public class AuthUserGrpcService extends AuthServiceGrpc.AuthServiceImplBase {
         }
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+
+    }
+
+    @Override
+    public void userExists(UserExistsRequest request, StreamObserver<UserExistsResponse> responseObserver) {
+
+        log.info("user exists request {}", request.toString());
+
+        UserExistsResponse response = UserExistsResponse.newBuilder()
+                .setUserStatus(usersService.userExists(request.getEmail()))
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void updateUserPassword(NewPasswordRequest request, StreamObserver<NewPasswordResponse> responseObserver) {
+
+        try {
+            log.info("user update password request {}", request.toString());
+
+            Users user = usersService.getUserByEmail(request.getEmail());
+
+            user.setPassword(request.getPassword());
+
+            usersService.updateUser(user);
+
+            NewPasswordResponse response = NewPasswordResponse.newBuilder()
+                    .setMessage("ok")
+                    .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+
+            NewPasswordResponse response = NewPasswordResponse.newBuilder()
+                    .setMessage(e.getMessage())
+                    .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
 
     }
 }

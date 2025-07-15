@@ -8,6 +8,11 @@ service AuthService {
   rpc CreateNewUser (CreateUserRequest) returns (CreateUserResponse);
 
   rpc LoginUser (LoginUserRequest) returns (LoginUserResponse);
+
+  rpc UserExists (UserExistsRequest) returns (UserExistsResponse);
+
+  rpc UpdateUserPassword(NewPasswordRequest) returns (NewPasswordResponse);
+
 }
 
 message CreateUserRequest {
@@ -31,4 +36,22 @@ message LoginUserResponse{
   string role = 3;
   string fullName = 4;
   string message = 5;
+}
+
+message UserExistsRequest{
+  string email = 1;
+}
+
+message UserExistsResponse{
+  bool userStatus = 1;
+}
+
+message NewPasswordRequest{
+  string email = 1;
+  string password = 2;
+}
+
+
+message NewPasswordResponse{
+  string message = 1;
 }

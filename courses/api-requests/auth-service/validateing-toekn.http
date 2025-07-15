@@ -1,0 +1,5 @@
+### GET request to example server
+GET http://localhost:8080/auth/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGUiOiJTVFVERU5UIiwiZnVsbE5hbWUiOiJ0ZXN0MSIsImlhdCI6MTc1MjQ0NTQ1MCwiZXhwIjoxNzUyNDgxNDUwfQ.A-ViToayQJnZQCb0OkD1aB3zf8VplWXUTmuUoMTGlPc
+
+###

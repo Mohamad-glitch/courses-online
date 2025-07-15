@@ -43,4 +43,20 @@ public class AuthUserGrpcServiceClient {
         return stub.loginUser(request);
     }
 
+    public UserExistsResponse checkUserExists(String email) {
+        UserExistsRequest request = UserExistsRequest.newBuilder()
+                .setEmail(email)
+                .build();
+
+        return stub.userExists(request);
+    }
+
+    public NewPasswordResponse updateUserPassword(String email, String newPassword){
+        NewPasswordRequest request = NewPasswordRequest.newBuilder()
+                .setEmail(email)
+                .setPassword(newPassword)
+                .build();
+
+        return stub.updateUserPassword(request);
+    }
 }

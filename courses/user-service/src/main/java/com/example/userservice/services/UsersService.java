@@ -35,4 +35,13 @@ public class UsersService {
         return usersDAO.findUsersByEmail(email);
     }
 
+    public boolean userExists(String email) {
+        return usersDAO.existsUsersByEmail(email);
+    }
+
+    @Transactional
+    public void updateUser(Users user) {
+        usersDAO.save(user);
+    }
+
 }

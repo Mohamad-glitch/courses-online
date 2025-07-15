@@ -19,18 +19,18 @@ public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(JwtException.class)
-    public ResponseEntity<Map<String, String>> handleJwtException(JwtException ex){
+    public ResponseEntity<Map<String, String>> handleJwtException(JwtException ex) {
         log.warn(ex.getMessage());
-        Map<String,String> error = new HashMap<>();
-        error.put("error",ex.getMessage());
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Invalid or expired token");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>>  handleMethodArgumentNotValid(MethodArgumentNotValidException ex){
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
 
         log.warn(ex.getMessage());
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(
                 error -> map.put(error.getField(), error.getDefaultMessage()));
 
@@ -38,43 +38,79 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserAlreadyExists.class)
-    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExists ex){
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExists ex) {
         log.warn(ex.getMessage());
-        Map<String,String> map = new HashMap<>();
-        map.put("error",ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(map);
     }
 
     @ExceptionHandler(StatusRuntimeException.class)
-    public ResponseEntity<Map<String, String>> handleStatusRuntimeException(StatusRuntimeException ex){
-        log.error("Failed to connect to User service: {}", ex.getMessage());
+    public ResponseEntity<Map<String, String>> handleStatusRuntimeException(StatusRuntimeException ex) {
+        log.warn("Failed to connect to User service: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(Map.of("error", "User service is unavailable, please try again later"));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleException(Exception ex){
+    public ResponseEntity<Map<String, String>> handleException(Exception ex) {
         log.warn(ex.getMessage());
-        Map<String,String> map = new HashMap<>();
-        map.put("error",ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(map);
     }
 
     @ExceptionHandler(UserNotFound.class)
-    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFound ex){
+    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFound ex) {
         log.warn(ex.getMessage());
-        Map<String,String> map = new HashMap<>();
-        map.put("error",ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(map);
     }
 
     @ExceptionHandler(InvalidPasswordOrEmail.class)
-    public ResponseEntity<Map<String, String>> handleInvalidPasswordOrEmail(InvalidPasswordOrEmail ex){
+    public ResponseEntity<Map<String, String>> handleInvalidPasswordOrEmail(InvalidPasswordOrEmail ex) {
         log.warn(ex.getMessage());
-        Map<String,String> map = new HashMap<>();
-        map.put("error",ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(map);
+    }
+
+    @ExceptionHandler(InvalidCredentials.class)
+    public ResponseEntity<Map<String, String>> handleInvalidCredentials(InvalidCredentials ex) {
+        log.warn(ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(map);
+    }
+
+    @ExceptionHandler(InvalidEmail.class)
+    public ResponseEntity<Map<String, String>> handleInvalidEmail(InvalidEmail ex) {
+        log.warn(ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(map);
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<Map<String, String>> handleTokenExpired(TokenExpiredException ex) {
+        log.warn(ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(map);
+    }
+
+    @ExceptionHandler(UrlHasBeenUsed.class)
+    public ResponseEntity<Map<String, String>> handleUrlHasBeenUsed(UrlHasBeenUsed ex) {
+        log.warn(ex.getMessage());
+        Map<String, String> map = new HashMap<>();
+        map.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(map);
     }

@@ -46,9 +46,24 @@ public class UserService {
             throw grpcException;
 
         } catch (Exception e) {
-            log.error("error while creating user", e);
+            log.warn("error while creating user", e);
         }
 
         return false;
+    }
+
+    public boolean userExists(String email) {
+        try{
+
+            return authUserGrpcServiceClient.checkUserExists(email).getUserStatus();
+        }catch (StatusRuntimeException grpcException) {
+            // this to let ExceptionHandler handle it
+            log.warn("grpc exception: ", grpcException);
+            throw grpcException;
+
+        }catch (Exception e){
+            log.warn("error while communicating with user profile service ", e);
+            throw e;
+        }
     }
 }

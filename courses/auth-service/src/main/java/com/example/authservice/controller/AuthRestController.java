@@ -1,7 +1,9 @@
 package com.example.authservice.controller;
 
 import com.example.authservice.dto.LoginRequestDto;
+import com.example.authservice.dto.NewPasswordDto;
 import com.example.authservice.dto.RegisterRequestDto;
+import com.example.authservice.dto.ResetPasswordRequestDto;
 import com.example.authservice.services.AuthService;
 import com.example.authservice.services.UserService;
 import jakarta.validation.Valid;
@@ -71,10 +73,17 @@ public class AuthRestController {
      */
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<String> refreshToken(@RequestBody RegisterRequestDto registerRequestDto) {
+    public ResponseEntity<String> refreshToken(@RequestHeader("Authorization") String authHeader) {
+        /*
+         I may make it if I have time but the hole point for this end point is
+         to create to token first one to generate an access token for api calls
+         the second one to refresh the api calls token
+         api calls token has a short life span like 15 min but refresh token will be like 7~14 days
+         more secure, but now I want to make this app going then enhance the security add more features
+         like this feature more security better app
 
-        // here is the logic
-
+         here is the logic
+*/
 
         return ResponseEntity.ok("Refresh Token Successfully");
     }
@@ -83,17 +92,24 @@ public class AuthRestController {
     /verify this method will verify the token to see if it's valid or not
 
     steps:
-    1- check if the token exists in the hashmap where the valid token are saved to do less request of validation
+    1- check if the token exists in the hashmap where the valid token are saved to do less request of validation this approach is not securer and will cause a serious security damage
     2- check if the is token was valid
 
      */
 
     @GetMapping("/verify")
-    public ResponseEntity<String> verifyToken(@RequestParam String token) {
+    public ResponseEntity<Void> verifyToken(@RequestHeader("Authorization") String authHeader) {
+        //DONE
 
         // here is the logic
+        if (!authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-        return ResponseEntity.ok("Verify Token Successfully");
+
+        return authService.validateToken(authHeader.substring(7)) ?
+                ResponseEntity.status(HttpStatus.OK).build() :
+                ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     /*
@@ -108,11 +124,13 @@ public class AuthRestController {
      */
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPasswordEmail(@RequestParam String token) {
-
+    public ResponseEntity<Void> resetPasswordEmail(@Valid @RequestBody ResetPasswordRequestDto resetPasswordRequestDto) {
+        //DONE
         // here is the logic
 
-        return ResponseEntity.ok("Reset Password Successfully");
+        authService.resetPasswordEmail(resetPasswordRequestDto);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /*
@@ -125,9 +143,12 @@ public class AuthRestController {
      */
 
     @PatchMapping("/reset-password/{token}")
-    public ResponseEntity<Void> resetPassword(@PathVariable String token) {
-
+    public ResponseEntity<Void> resetPassword(@PathVariable("token") String token
+            , @Valid @RequestBody NewPasswordDto newPasswordDto) {
+        // DONE
         // here is the logic
+
+        authService.resetPassword(token, newPasswordDto);
 
         return ResponseEntity.ok().build();
     }
