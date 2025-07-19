@@ -1,0 +1,11 @@
+### GET request to example server
+PATCH localhost:4001/users/update
+Content-Type: application/json
+
+{
+  "email": "test1@gmail.com",
+  "bio": "i am new to this world and i want to some motivations to do more so i need to learn ",
+  "fullName": "Thomas Shelbi"
+}
+
+###

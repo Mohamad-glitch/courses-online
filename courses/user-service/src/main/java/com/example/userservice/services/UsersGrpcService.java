@@ -8,14 +8,12 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class UsersService {
+public class UsersGrpcService {
 
     private final UsersDAO usersDAO;
 
-    public UsersService(UsersDAO usersDAO) {
+    public UsersGrpcService(UsersDAO usersDAO) {
         this.usersDAO = usersDAO;
     }
 

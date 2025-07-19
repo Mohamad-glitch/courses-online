@@ -6,6 +6,7 @@ import com.example.authservice.dto.RegisterRequestDto;
 import com.example.authservice.dto.ResetPasswordRequestDto;
 import com.example.authservice.services.AuthService;
 import com.example.authservice.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ public class AuthRestController {
      */
 
     @PostMapping("/register")
+    @Operation(description = "take user email, password and full name to save in DB ", summary = "register user")
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequestDto registerRequestDto) throws Exception {
         // DONE
 
@@ -54,6 +56,7 @@ public class AuthRestController {
      */
 
     @PostMapping("/login")
+    @Operation(description = "takes email and password and checks if user in DB ture: generate a token false: 404", summary = "login a user")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
 
         // here is the logic
@@ -73,6 +76,7 @@ public class AuthRestController {
      */
 
     @PostMapping("/refresh-token")
+    @Operation(description = "not implemented and i may implement it", summary = "short token with refresh token")
     public ResponseEntity<String> refreshToken(@RequestHeader("Authorization") String authHeader) {
         /*
          I may make it if I have time but the hole point for this end point is
@@ -98,6 +102,7 @@ public class AuthRestController {
      */
 
     @GetMapping("/verify")
+    @Operation(description = "checks if the token is valid or not", summary = "verify token")
     public ResponseEntity<Void> verifyToken(@RequestHeader("Authorization") String authHeader) {
         //DONE
 
@@ -124,6 +129,7 @@ public class AuthRestController {
      */
 
     @PostMapping("/reset-password")
+    @Operation(description = "this method will send an email to user with a link to reset password", summary = "reset password")
     public ResponseEntity<Void> resetPasswordEmail(@Valid @RequestBody ResetPasswordRequestDto resetPasswordRequestDto) {
         //DONE
         // here is the logic
@@ -143,6 +149,7 @@ public class AuthRestController {
      */
 
     @PatchMapping("/reset-password/{token}")
+    @Operation(description = "this method can be accessed by user from the email he requested to reset password", summary = "reset password from sent url via email")
     public ResponseEntity<Void> resetPassword(@PathVariable("token") String token
             , @Valid @RequestBody NewPasswordDto newPasswordDto) {
         // DONE

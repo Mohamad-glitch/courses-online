@@ -3,7 +3,7 @@ package com.example.userservice.grpc;
 import auth_user_communication.*;
 import com.example.userservice.dto.CreateNewUserRequest;
 import com.example.userservice.model.Users;
-import com.example.userservice.services.UsersService;
+import com.example.userservice.services.UsersGrpcService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
@@ -14,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AuthUserGrpcService extends AuthServiceGrpc.AuthServiceImplBase {
 
     private static final Logger log = LoggerFactory.getLogger(AuthUserGrpcService.class);
-    private final UsersService usersService;
+    private final UsersGrpcService usersGrpcService;
 
     @Autowired
-    public AuthUserGrpcService(UsersService usersService) {
-        this.usersService = usersService;
+    public AuthUserGrpcService(UsersGrpcService usersGrpcService) {
+        this.usersGrpcService = usersGrpcService;
     }
 
 
@@ -34,7 +34,7 @@ public class AuthUserGrpcService extends AuthServiceGrpc.AuthServiceImplBase {
 
         infoLog(request, "user info {}");
 
-        String saveUserResponse = usersService.createNewUser(new CreateNewUserRequest(request.getEmail(),
+        String saveUserResponse = usersGrpcService.createNewUser(new CreateNewUserRequest(request.getEmail(),
                 request.getPassword(), request.getFullName(), request.getRole()));
 
 
@@ -56,7 +56,7 @@ public class AuthUserGrpcService extends AuthServiceGrpc.AuthServiceImplBase {
 
         infoLog(request, "user login info {}");
 
-        Users user = usersService.getUserByEmail(request.getEmail());
+        Users user = usersGrpcService.getUserByEmail(request.getEmail());
         LoginUserResponse response;
         if (user != null) {
 
@@ -87,7 +87,7 @@ public class AuthUserGrpcService extends AuthServiceGrpc.AuthServiceImplBase {
         log.info("user exists request {}", request.toString());
 
         UserExistsResponse response = UserExistsResponse.newBuilder()
-                .setUserStatus(usersService.userExists(request.getEmail()))
+                .setUserStatus(usersGrpcService.userExists(request.getEmail()))
                 .build();
 
         responseObserver.onNext(response);
@@ -100,11 +100,11 @@ public class AuthUserGrpcService extends AuthServiceGrpc.AuthServiceImplBase {
         try {
             log.info("user update password request {}", request.toString());
 
-            Users user = usersService.getUserByEmail(request.getEmail());
+            Users user = usersGrpcService.getUserByEmail(request.getEmail());
 
             user.setPassword(request.getPassword());
 
-            usersService.updateUser(user);
+            usersGrpcService.updateUser(user);
 
             NewPasswordResponse response = NewPasswordResponse.newBuilder()
                     .setMessage("ok")

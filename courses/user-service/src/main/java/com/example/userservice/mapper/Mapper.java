@@ -1,6 +1,7 @@
 package com.example.userservice.mapper;
 
 import com.example.userservice.dto.CreateNewUserRequest;
+import com.example.userservice.dto.ShowUserInfoDto;
 import com.example.userservice.model.Users;
 
 import java.util.Date;
@@ -21,6 +22,12 @@ public class Mapper {
         return users;
     }
 
+    public static ShowUserInfoDto fromUserToShowUserInfoDto(Users users) {
+
+        return new ShowUserInfoDto(
+                users.getEmail(), users.getFullName(), users.getBio()
+        );
+    }
 
 
 }

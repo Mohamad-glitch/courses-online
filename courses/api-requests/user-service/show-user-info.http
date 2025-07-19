@@ -1,0 +1,9 @@
+### GET request to example server
+GET http://localhost:4001/users/
+Content-Type: application/json
+
+{
+  "email": "test1@gmail.com"
+}
+
+###
