@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "auth_user_communication";
+option java_outer_classname = "UserAuthProto";
+
+service AuthService {
+  rpc CreateNewUser (CreateUserRequest) returns (CreateUserResponse);
+
+  rpc LoginUser (LoginUserRequest) returns (LoginUserResponse);
+
+  rpc UserExists (UserExistsRequest) returns (UserExistsResponse);
+
+  rpc UpdateUserPassword(NewPasswordRequest) returns (NewPasswordResponse);
+
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string password = 2;
+  string fullName = 3;
+  string role = 4;
+}
+
+message CreateUserResponse {
+  string  message= 1;
+}
+
+message LoginUserRequest{
+  string email = 1;
+}
+
+message LoginUserResponse{
+  string email = 1;
+  string password = 2;
+  string role = 3;
+  string fullName = 4;
+  string message = 5;
+}
+
+message UserExistsRequest{
+  string email = 1;
+}
+
+message UserExistsResponse{
+  bool userStatus = 1;
+}
+
+message NewPasswordRequest{
+    string email = 1;
+  string password = 2;
+}
+
+
+message NewPasswordResponse{
+  string message = 1;
+}
