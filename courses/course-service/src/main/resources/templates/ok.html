@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+
+<form action="http://localhost:4002/courses/create-course" method="POST" enctype="multipart/form-data">
+
+  <label>Email:</label><br>
+  <input type="email" name="instructorEmail" required><br><br>
+
+  <label>Title:</label><br>
+  <input type="text" name="title" required><br><br>
+
+  <label>Description:</label><br>
+  <textarea name="description" rows="3" required></textarea><br><br>
+
+  <label>Category:</label><br>
+  <input type="text" name="category" required><br><br>
+
+  <label>Tags:</label><br>
+  <input type="text" name="tags" value="1,2,3"><br><br>
+
+  <label>Price (USD):</label><br>
+  <input type="number" name="price" step="0.01"><br><br>
+
+  <label>Course Image:</label><br>
+  <input type="file" name="image" accept="image/*" required><br><br>
+
+  <button type="submit">Submit</button>
+</form>
+
+
+</body>
+</html>

@@ -45,6 +45,14 @@ public class Courses {
     @Column(name = "created_at")//,  nullable = false
     private Date createdAt;
 
+    @Column(name = "price")
+    private double price;
+
+    @Column(name = "course_thumbnails_url",  nullable = false)
+    private String image_url;
+
+
+
     @OneToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.MERGE,
                     CascadeType.REFRESH, CascadeType.REMOVE,

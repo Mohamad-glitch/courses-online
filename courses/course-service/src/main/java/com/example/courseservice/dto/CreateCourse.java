@@ -2,6 +2,7 @@ package com.example.courseservice.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,7 +22,12 @@ public record CreateCourse(
         String category,
 
         @NotEmpty(message = "Tag/s is/are required")
-        List<String> tags
+        List<String> tags,
 
-) {
+
+        Double price,
+
+        MultipartFile image
+
+        ) {
 }

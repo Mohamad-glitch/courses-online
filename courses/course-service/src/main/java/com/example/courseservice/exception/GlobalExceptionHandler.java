@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleStatusRuntimeException(StatusRuntimeException ex) {
         log.warn("Failed to connect to User service: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(Map.of("error", "User service is unavailable, please try again later"));
+                .body(Map.of("error", ex.getMessage()));
     }
 
 

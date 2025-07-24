@@ -1,10 +1,10 @@
 package com.example.courseservice.controller;
 
-import com.example.courseservice.dao.CoursesDao;
 import com.example.courseservice.dto.CreateCourse;
 import com.example.courseservice.dto.GetAllCoursesWithInstructorId;
+import com.example.courseservice.dto.ShowInstructorCourses;
 import com.example.courseservice.dto.UpdateCourse;
-import com.example.courseservice.model.Courses;
+import com.example.courseservice.mapper.Mapper;
 import com.example.courseservice.services.CoursesServices;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -12,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/courses")
@@ -30,7 +32,7 @@ public class CoursesRestController {
      */
 
 
-    private final CoursesServices  coursesServices;
+    private final CoursesServices coursesServices;
 
     public CoursesRestController(CoursesServices coursesServices) {
         this.coursesServices = coursesServices;
@@ -53,7 +55,7 @@ public class CoursesRestController {
 
     @GetMapping("/instructor/courses")
     @Operation(summary = "gets all instructor courses", description = "this method will get all instructor courses from his id")
-    public ResponseEntity<List<Courses>> getAllInstructorCourses(@Valid @RequestBody GetAllCoursesWithInstructorId instructorId) {
+    public ResponseEntity<List<ShowInstructorCourses>> getAllInstructorCourses(@Valid @RequestBody GetAllCoursesWithInstructorId instructorId) {
         // DONE
 
 
@@ -71,8 +73,14 @@ public class CoursesRestController {
     */
 
     @PostMapping("/create-course")
-    @Operation
-    public ResponseEntity<Void> createCourses(@Valid @RequestBody CreateCourse course) {
+    @Operation(summary = "this method will create new course", description = """
+             this will take some course info to create it like title,description instructor email, category ...\s
+             and will generate new course \s
+             some errors that may happens or code other than 200
+             505, another service is down and could not complete the request \s
+             500, something went wrong   \s
+            \s""")
+    public ResponseEntity<Void> createCourses(@Valid @ModelAttribute CreateCourse course) {
 
         coursesServices.createCourse(course);
 
@@ -84,17 +92,17 @@ public class CoursesRestController {
     /*
     /create-tags this method to add tags to use it in courses
 
-    check if the tag in DB if yes wont save it if not it will save it
+    check if the tag in DB if yes won't save it if not it will save it
 
-    if the tag was in DB after execute  the method it will give back a list with an tags that were in DB and not saved
+    if the tag was in DB after execute  the method it will give back a list with a tags that were in DB and not saved
 
      */
 
     @PostMapping("/create-tags")
-    @Operation(summary = "add new tags"
-            , description = "add new tags in DB if there was a a tag already saved in DB it will send a message or error message  with unsaved (repeated tags)")
+    @Operation(summary = "this method no longer needed"
+            , description = "now what it does just delete/drop courses table this will be no longer here after completing this service ")
     public ResponseEntity<Void> addTags(@Valid @RequestBody List<String> tags) {
-        // DONE
+        // this method will be removed but for now it only used if you want to delete the courses and sections DB
 
         coursesServices.createTags(tags);
 
@@ -110,8 +118,9 @@ public class CoursesRestController {
      */
 
     @PatchMapping("/{id}/update")
+    @Operation(summary = "this method will update course info by id", description = "can update every thing except id and instructor email")
     public ResponseEntity<Void> updateCourse(@PathVariable UUID id, @Valid @RequestBody UpdateCourse updateCourse) {
-
+        // DONE
 
         coursesServices.updateCourse(id, updateCourse);
 
@@ -119,5 +128,48 @@ public class CoursesRestController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+
+    @GetMapping("/list-by-categorise")
+    @Operation(summary = "this method will return a list of categorise", description = "this method will return every category in DB")
+    public ResponseEntity<List<String>> categorise() {
+        // DONE
+
+        List<String> list = coursesServices.getCoursesCategorise();
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    /*
+    this method to search for courses in a specific category ex: IT
+     */
+
+    @GetMapping("/get-courses-by-category/{category}")
+    @Operation(summary = "this method will response with 5 courses fom that category"
+            , description = """
+            this will search for courses has same category as entered \s
+            this method is case sensitive so as the same category you want enter it with the same cases
+            """)
+    public ResponseEntity<List<ShowInstructorCourses>> showCoursesByCategory(@PathVariable String category) {
+        // DONE
+        List<ShowInstructorCourses> courses = coursesServices.getCoursesByCategory(category).stream()
+                .map(Mapper::showCoursesInfo).collect(Collectors.toList());
+
+        if (courses.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ArrayList<>());
+        } else {
+
+            return ResponseEntity.status(HttpStatus.OK).body(courses);
+        }
+    }
+
+
+    /*
+
+        new method for searching for something but that will be for later
+
+         i will create a method or endpoint to show the tags i have to make it
+         easer to user to add tags for what is already exists
+
+     */
 
 }
