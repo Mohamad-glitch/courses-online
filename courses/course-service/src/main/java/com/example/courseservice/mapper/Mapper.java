@@ -1,7 +1,9 @@
 package com.example.courseservice.mapper;
 
 import com.example.courseservice.dto.ShowInstructorCourses;
+import com.example.courseservice.dto.ShowTagsName;
 import com.example.courseservice.model.Courses;
+import com.example.courseservice.model.Tags;
 
 public class Mapper {
 
@@ -17,8 +19,16 @@ public class Mapper {
                 courses.getImage_url()
 
         );
-
     }
 
+
+    public static ShowTagsName toShowTagsName(Tags tags) {
+
+        StringBuilder name = new StringBuilder();
+        name.append(tags.getName().toUpperCase().charAt(0));
+        name.append(tags.getName().substring(1).toLowerCase());
+
+        return new ShowTagsName(name.toString());
+    }
 
 }

@@ -2,10 +2,7 @@ package com.example.courseservice.services;
 
 import com.example.courseservice.dao.CoursesDao;
 import com.example.courseservice.dao.TagsDao;
-import com.example.courseservice.dto.CreateCourse;
-import com.example.courseservice.dto.GetAllCoursesWithInstructorId;
-import com.example.courseservice.dto.ShowInstructorCourses;
-import com.example.courseservice.dto.UpdateCourse;
+import com.example.courseservice.dto.*;
 import com.example.courseservice.exception.CourseNotFound;
 import com.example.courseservice.exception.UserNotFound;
 import com.example.courseservice.grpc.CourseUserGrpcService;
@@ -114,11 +111,14 @@ public class CoursesServices {
 
     public void createTags(List<String> tags) {
 
-        List<Courses> allCourses = coursesDao.findAll();
+        searchForCourse("java");
 
-        for (Courses courses : allCourses) {
-            coursesDao.delete(courses);
-        }
+
+//        List<Courses> allCourses = coursesDao.findAll();
+//
+//        for (Courses courses : allCourses) {
+//            coursesDao.delete(courses);
+//        }
 
     }
 
@@ -147,5 +147,19 @@ public class CoursesServices {
 
 
         return coursesDao.findCoursesByCategory(category);
+    }
+
+    // this method will make a query to search for the searched word in DB courses title and description
+    // if there was match  it will return the courses that has them
+    public List<ShowInstructorCourses> searchForCourse(String searched) {
+
+        return coursesDao.searchForCourse(searched)
+                .stream().map(Mapper::showCoursesInfo).collect(Collectors.toList());
+    }
+
+    public List<ShowTagsName> getAllTags() {
+
+
+        return tagsDao.findAll().stream().map(Mapper::toShowTagsName).toList();
     }
 }

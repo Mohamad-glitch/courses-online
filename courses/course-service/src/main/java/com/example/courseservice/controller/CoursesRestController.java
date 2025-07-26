@@ -1,9 +1,6 @@
 package com.example.courseservice.controller;
 
-import com.example.courseservice.dto.CreateCourse;
-import com.example.courseservice.dto.GetAllCoursesWithInstructorId;
-import com.example.courseservice.dto.ShowInstructorCourses;
-import com.example.courseservice.dto.UpdateCourse;
+import com.example.courseservice.dto.*;
 import com.example.courseservice.mapper.Mapper;
 import com.example.courseservice.services.CoursesServices;
 import io.swagger.v3.oas.annotations.Operation;
@@ -165,11 +162,44 @@ public class CoursesRestController {
 
     /*
 
-        new method for searching for something but that will be for later
-
-         i will create a method or endpoint to show the tags i have to make it
-         easer to user to add tags for what is already exists
+        this method will print every tag stored in DB to make it easier to the user to chose from them and if there is a tag
+        that exists that he want to use it
 
      */
+
+    @GetMapping("/show-tags")
+    @Operation(summary = "this api will show a list of tags name" , description = """
+            this method will return all the tags that exists in DB and show it to user \s
+            to chose a list of tags to add to his course
+            """)
+    public ResponseEntity<List<ShowTagsName>> showTagsName (){
+        // DONE
+
+        return ResponseEntity.status(HttpStatus.OK).body(coursesServices.getAllTags());
+    }
+
+
+    /*
+
+    this method will search for a keyword in title or description in DB if it matches
+    it will return the courses that matched
+
+     */
+    @GetMapping("/search/{searched}")
+    @Operation(summary = "this method will search for a courses ", description = """
+            this method will search for the courses that contains/has the searched for \s
+            it will return 200 only 500 for bad things happened that i dont know
+            """)
+    public ResponseEntity<List<ShowInstructorCourses>> searchingForCourses(@PathVariable String searched) {
+        //DONE
+
+        List<ShowInstructorCourses> courses = coursesServices.searchForCourse(searched);
+
+        if(courses.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ArrayList<>());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(courses);
+    }
 
 }
