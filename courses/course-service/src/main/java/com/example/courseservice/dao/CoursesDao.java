@@ -22,7 +22,7 @@ public interface CoursesDao extends JpaRepository<Courses, UUID> {
     @Query("select DISTINCT  category from Courses  ")
     List<String> getCoursesByRandomCategorise();
 
-    @Query(value = "SELECT * FROM courses WHERE category = :category LIMIT 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM courses WHERE category ILIKE :category LIMIT 5", nativeQuery = true)
     List<Courses> findCoursesByCategory(@Param("category") String category);
 
     @Query(value = "SELECT * FROM Courses WHERE title ILIKE %:search% OR description ILIKE %:search% ",  nativeQuery = true)

@@ -47,7 +47,7 @@ message UserExistsResponse{
 }
 
 message NewPasswordRequest{
-    string email = 1;
+  string email = 1;
   string password = 2;
 }
 

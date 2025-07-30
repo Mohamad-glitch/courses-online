@@ -1,5 +1,5 @@
 ### GET request to example server
-GET http://localhost:8080/auth/verify
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGUiOiJTVFVERU5UIiwiZnVsbE5hbWUiOiJ0ZXN0MSIsImlhdCI6MTc1MjQ0NTQ1MCwiZXhwIjoxNzUyNDgxNDUwfQ.A-ViToayQJnZQCb0OkD1aB3zf8VplWXUTmuUoMTGlPc
+GET http://localhost:4000/auth/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsInJvbGUiOiJTVFVERU5UIiwiZnVsbE5hbWUiOiJ0ZXN0MSIsImlhdCI6MTc1MzU0MTkxOSwiZXhwIjoxNzUzNTc3OTE5fQ.aqpT_zj2EMQ1X3N69Je79qq4mpY4lbDLmJw1NjCJpXU
 
 ###

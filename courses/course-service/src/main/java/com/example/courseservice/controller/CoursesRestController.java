@@ -187,7 +187,7 @@ public class CoursesRestController {
      */
     @GetMapping("/search/{searched}")
     @Operation(summary = "this method will search for a courses ", description = """
-            this method will search for the courses that contains/has the searched for \s
+            this method will search for the courses that contains/has the searched for in description or title \s
             it will return 200 only 500 for bad things happened that i dont know
             """)
     public ResponseEntity<List<ShowInstructorCourses>> searchingForCourses(@PathVariable String searched) {

@@ -1,0 +1,7 @@
+### GET request to example server
+POST localhost:4002/courses/create-course
+Content-Type: application/json
+
+// here should be the course info and the image
+
+###

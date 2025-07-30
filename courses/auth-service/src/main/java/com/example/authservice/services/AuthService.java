@@ -79,7 +79,7 @@ public class AuthService {
         String token = resetPasswordToken(resetPasswordRequestDto.email());
 
         mailSenderService.sendResetPassword(resetPasswordRequestDto.email()
-                , "http://localhost:8080/auth/reset-password/" + token);
+                , "http://localhost:4000/auth/reset-password/" + token);
 
         // this part to save the generated token for resetting the password to add if the user token has expired or not used or not
         // is this token for this email will be faster than decode the token to check if the token fo the same email or not
@@ -123,6 +123,7 @@ public class AuthService {
         }
 
         savedToken.setAccessed(true);
+        savedToken.setAccessedAt(new Date(System.currentTimeMillis()));
         resetPasswordTokenService.save(savedToken);
     }
 

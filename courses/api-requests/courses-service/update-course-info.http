@@ -1,0 +1,10 @@
+### GET request to example server
+PATCH localhost:4002/courses/19c7ddbd-f038-4cbc-8f7f-28c4bc923c26/update
+Content-Type: application/json
+
+{
+  "title": "English",
+  "category": "languages",
+  "description": "English for beginner"
+}
+###
